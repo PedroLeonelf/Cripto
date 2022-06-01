@@ -6,7 +6,7 @@
 int charCount(char letra, char * string){
     int i; 
     int counter = 0;
-    printf("%s\n", string);
+    printf("String:%s\n", string);
     for(i = 0; i < strlen(string); i++){
         if(string[i] == letra || string[i] == letra + 32){
             printf("Achou %c em %c\n", letra, string[i]);
@@ -46,7 +46,6 @@ long fsize(FILE *fp){
 char * readFile(char * file){
     FILE * fp = fopen(file, "r");
     checkFileIsOk(file);
-    // long size = fsize(fp); works only in linux
     long size = fsize(fp);
     char * fcontent = malloc(size);
     fread(fcontent, 1, size, fp);
@@ -63,8 +62,9 @@ void writeTable(char * out, char * in){
 
 
 int main(int argc, char const *argv[]){
-    char string[30];
-    writeTable("tabelaCorpus.txt", "corpus_portugues.txt");
+    // printf("%s", readFile("texto.txt"));
+    // writeTable("tabelaTexto.txt", "texto.txt");
     // printf("%c", 'a' - 32);
+    writeTable("tabelaCorpus.txt", "corpus_portugues.txt");
     return 0;
 }
