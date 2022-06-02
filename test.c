@@ -2,6 +2,26 @@
 #include <stdlib.h>
 #include <string.h>
 
+int getTotalOcorrunces(int * vect){
+    int len;
+    int total = 0;
+    for(len = 0; len < 26; len++){
+        total += vect[len];
+    }
+    return total;
+}
+
+void writeBackFrequency(char * file, int * freq){
+    int total = getTotalOcorrunces(freq);
+    FILE * fp = fopen(file, "w");
+    for(int i = 0; i < 26; i++){
+        float value = (float)100 * freq[i] / total;
+        fprintf(fp, "%f ", value);
+    }
+    fclose(fp);
+}
+
+
 
 int charCount(char letra, char * string){
     int i; 
@@ -18,11 +38,12 @@ int charCount(char letra, char * string){
 
 void countAZ(char * string, char * file){
     char c;
-    FILE * fp = fopen(file, "a+");
+    int vector[26];
     for(c = 'A'; c < 'Z'; c++){
-        fprintf(fp, "%d ",charCount(c, string));
+        // fprintf(fp, "%d ",charCount(c, string));
+        vector[c - 'A'] = charCount(c, string);
     }
-    fclose(fp);
+    writeBackFrequency(file, vector);
 }
 
 
@@ -57,6 +78,7 @@ void writeTable(char * out, char * in){
     checkFileIsOk(out);
     fclose(fopen(out, "w"));
     countAZ(readFile(in), out);
+
 }
  
 
@@ -65,6 +87,7 @@ int main(int argc, char const *argv[]){
     // printf("%s", readFile("texto.txt"));
     // writeTable("tabelaTexto.txt", "texto.txt");
     // printf("%c", 'a' - 32);
-    writeTable("tabelaCorpus.txt", "corpus_portugues.txt");
+    writeTable("tabelaTexto.txt", "texto.txt");
+    // printf("%d", getTotalOcorrunces("tabelaTexto.txt"));
     return 0;
 }
