@@ -78,14 +78,24 @@ void writeTable(char * out, char * in){
 }
 
 void decrypt(char * encryptText){
+    // char * out = malloc(strlen(encryptText));
+    // for (int i = 1; i < 26; i++){
+    //     for(int idx = 0; idx < strlen(encryptText); idx++){
+    //         out[idx] = encryptText[idx] + i;
+    //         if(encryptText[idx] + i < 'A') 
+    //             out[idx] = encryptText[idx] - 26;
+    //         if(encryptText[idx] + i > 'Z') 
+    //             out[idx] = encryptText[idx] + 26; 
+    //     }
+    //     printf("%s numero:%d \n", out, i);
+    // }
+
     char * out = malloc(strlen(encryptText));
     for (int i = 1; i < 26; i++){
         for(int idx = 0; idx < strlen(encryptText); idx++){
             out[idx] = encryptText[idx] + i;
-            if(encryptText[idx] + i < 'A') 
-                out[idx] = encryptText[idx] - 26;
-            if(encryptText[idx] + i > 'Z') 
-                out[idx] = encryptText[idx] + 26; 
+            if(encryptText[idx] + i >'Z')
+                out[idx] = encryptText[idx] + i - 25;
         }
         printf("%s numero:%d \n", out, i);
     }
@@ -96,6 +106,7 @@ void decrypt(char * encryptText){
 int main(int argc, char const *argv[]){
     char stringCifrada[50] = "HQKQWTFLCGETRTEGROYOEGXQDTFLQUTDLTEKTZQ";
     decrypt(stringCifrada);
+    // printf("%c", 'y' - 23);
     // char stringDescifrada[50] = "";
     // writeTable("tabelaTexto.txt", stringCifrada);
     return 0;
