@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 int getTotalOcorrunces(int * vect){
     int len;
@@ -24,10 +25,8 @@ void writeBackFrequency(char * file, int * freq){
 int charCount(char letra, char * string){
     int i; 
     int counter = 0;
-    printf("String:%s\n", string);
     for(i = 0; i < strlen(string); i++){
         if(string[i] == letra || string[i] == letra + 32){
-            printf("Achou %c em %c\n", letra, string[i]);
             counter+=1;
         }
     }
@@ -37,7 +36,7 @@ int charCount(char letra, char * string){
 void countAZ(char * string, char * file){
     char c;
     int vector[26];
-    for(c = 'A'; c < 'Z'; c++){
+    for(c = 'A'; c <= 'Z'; c++){
         // fprintf(fp, "%d ",charCount(c, string));
         vector[c - 'A'] = charCount(c, string);
     }
@@ -77,27 +76,37 @@ void writeTable(char * out, char * in){
 
 }
 
-void decrypt(char * encryptText){
-    // char * out = malloc(strlen(encryptText));
-    // for (int i = 1; i < 26; i++){
-    //     for(int idx = 0; idx < strlen(encryptText); idx++){
-    //         out[idx] = encryptText[idx] + i;
-    //         if(encryptText[idx] + i < 'A') 
-    //             out[idx] = encryptText[idx] - 26;
-    //         if(encryptText[idx] + i > 'Z') 
-    //             out[idx] = encryptText[idx] + 26; 
-    //     }
-    //     printf("%s numero:%d \n", out, i);
-    // }
+float chiQuadrado(){
+    int i;
+    FILE *fpReference = fopen("tabelaPortugues.txt", "r");
+    FILE *fpDecript = fopen("tabelaTexto.txt", "r");
+    float ref, actual, equation;
+    float sum = 0.0;
+    for(i = 0; i <= 25; i++){
+        fscanf(fpReference, "%f", &ref);
+        fscanf(fpDecript, "%f", &actual);
+        equation = pow((actual - ref),2) / ref;
+        sum += equation;
+    }
+    return sum;    
+}
 
+
+
+
+
+void decrypt(char * encryptText){
     char * out = malloc(strlen(encryptText));
-    for (int i = 1; i < 26; i++){
+    for (int i = 1; i <= 58; i++){
         for(int idx = 0; idx < strlen(encryptText); idx++){
             out[idx] = encryptText[idx] + i;
             if(encryptText[idx] + i >'Z')
                 out[idx] = encryptText[idx] + i - 25;
         }
-        printf("%s numero:%d \n", out, i);
+        writeTable("tabelaTexto.txt", out);
+        float chi = chiQuadrado();
+        char key = 'A'+i-1;
+        printf("%s key:%c chi:%f \n", out, key, chi);
     }
 }
  
@@ -106,8 +115,8 @@ void decrypt(char * encryptText){
 int main(int argc, char const *argv[]){
     char stringCifrada[50] = "HQKQWTFLCGETRTEGROYOEGXQDTFLQUTDLTEKTZQ";
     decrypt(stringCifrada);
-    // printf("%c", 'y' - 23);
-    // char stringDescifrada[50] = "";
+    // chiQuadrado();
     // writeTable("tabelaTexto.txt", stringCifrada);
+    // printf("%d", 'A');
     return 0;
 }
