@@ -97,6 +97,9 @@ float chiQuadrado(){
 
 void decrypt(char * encryptText){
     char * out = malloc(strlen(encryptText));
+    char * aux = malloc(strlen(encryptText));
+    float menor = 10000.0;
+    int auxKey;
     for (int i = 1; i <= 58; i++){
         for(int idx = 0; idx < strlen(encryptText); idx++){
             out[idx] = encryptText[idx] + i;
@@ -106,8 +109,15 @@ void decrypt(char * encryptText){
         writeTable("tabelaTexto.txt", out);
         float chi = chiQuadrado();
         char key = 'A'+i-1;
+        if (chi < menor){
+            menor = chi;
+            auxKey = key;
+            strcpy(aux,out);
+        }
         printf("%s key:%c chi:%f \n", out, key, chi);
     }
+    printf("\nMenor:%s key:%c chi:%f \n", aux, auxKey, menor);
+
 }
  
 

@@ -1,0 +1,1 @@
+Execução:gcc -o codigo codigo.c -lm && ./codigo
